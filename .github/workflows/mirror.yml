@@ -1,0 +1,20 @@
+on:
+  schedule:
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Astro Repo
+        run: |
+          git clone --depth 1 https://github.com/withastro/astro
+          cp -r astro/examples ./templates
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          commit_message: "[ci] update-templates"
+          branch: ${{ github.head_ref }}
